@@ -69,11 +69,7 @@ public class SwiftReceiveSharingPlugin: NSObject, FlutterPlugin, FlutterStreamHa
                 let json = userDefaults?.object(forKey: key) as? Data {
                 let sharedArray = decode(data: json)
                 let sharedMediaFiles: [SharedMediaFile] = sharedArray.compactMap{ (sharedFile) in
-                    var path :String?
-                    if(sharedFile.path != nil){
-                        path = getAbsolutePath(for: sharedFile.path!)
-                    }
-                    return SharedMediaFile.init(name: sharedFile.name, path: path, text: sharedFile.text, type:sharedFile.type)
+                    return SharedMediaFile.init(name: sharedFile.name, path: sharedFile.path, text: sharedFile.text, type:sharedFile.type)
                 }
                 latestMedia = sharedMediaFiles
                 if !sharedMediaFiles.isEmpty {
