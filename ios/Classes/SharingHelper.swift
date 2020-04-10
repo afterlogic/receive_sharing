@@ -118,7 +118,7 @@ open class SharingHelper : SLComposeServiceViewController {
                 let copied = self.copyFile(at: url, to: newPath)
                 if(copied){
                     return SharedMediaFile.init(name: fileName,
-                                                path: newPath.absoluteString,
+                                                path: newPath.path,
                                                 text: nil,
                                                 type: SharedMediaType.media)
                 }
