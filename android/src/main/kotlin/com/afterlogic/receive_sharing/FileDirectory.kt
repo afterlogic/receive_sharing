@@ -91,8 +91,9 @@ object FileDirectory {
                 val mimeType = context.contentResolver.getType(uri)
                 val isImage = mimeType?.startsWith("image") == true
                 val prefix = if (isImage) "IMG" else "VID"
+                val name = uri.path?.split(File.separator)?.last()
                 val type = MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)
-                val targetFile = File(context.cacheDir, "${prefix}_${Date().time}.$type")
+                val targetFile = File(context.cacheDir, name ?: "${prefix}_${Date().time}.$type")
                 context.contentResolver.openInputStream(uri)?.use { input ->
                     FileOutputStream(targetFile).use { fileOut ->
                         input.copyTo(fileOut)
