@@ -49,7 +49,7 @@ public class SwiftReceiveSharingPlugin: NSObject, FlutterPlugin, FlutterStreamHa
                 }
             }
         }
-        return false
+        return true
     }
     
     public func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
