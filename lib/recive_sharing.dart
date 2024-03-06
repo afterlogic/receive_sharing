@@ -10,11 +10,10 @@ class ReceiveSharing {
   static const EventChannel _eChannelMedia =
       const EventChannel("receive_sharing/events-media");
 
-  static Stream<List<SharedMediaFile>> _streamMedia;
+  static Stream<List<SharedMediaFile>>? _streamMedia;
 
   static Future<List<SharedMediaFile>> getInitialMedia() async {
     final String json = await _mChannel.invokeMethod('getInitialMedia');
-    if (json == null) return null;
     final encoded = jsonDecode(json);
     return encoded
         .map<SharedMediaFile>((file) => SharedMediaFile.fromJson(file))
@@ -28,20 +27,17 @@ class ReceiveSharing {
       _streamMedia = stream.transform<List<SharedMediaFile>>(
         new StreamTransformer<String, List<SharedMediaFile>>.fromHandlers(
           handleData: (String data, EventSink<List<SharedMediaFile>> sink) {
-            if (data == null) {
-              sink.add(null);
-            } else {
               final encoded = jsonDecode(data);
               sink.add(encoded
                   .map<SharedMediaFile>(
                       (file) => SharedMediaFile.fromJson(file))
                   .toList());
-            }
+
           },
         ),
       );
     }
-    return _streamMedia;
+    return _streamMedia!;
   }
 
   static void reset() {

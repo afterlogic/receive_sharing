@@ -75,7 +75,7 @@ class ReceiveSharingPlugin : FlutterPlugin, MethodCallHandler, EventChannel.Stre
         }
     }
 
-    override fun onNewIntent(intent: Intent?): Boolean {
+    override fun onNewIntent(intent: Intent): Boolean {
         handleIntent(applicationContext, intent)
         return false
     }
