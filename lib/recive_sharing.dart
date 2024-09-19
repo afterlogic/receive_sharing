@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
 class ReceiveSharing {
@@ -13,11 +14,15 @@ class ReceiveSharing {
   static Stream<List<SharedMediaFile>>? _streamMedia;
 
   static Future<List<SharedMediaFile>> getInitialMedia() async {
-    final String json = await _mChannel.invokeMethod('getInitialMedia');
-    final encoded = jsonDecode(json);
-    return encoded
-        .map<SharedMediaFile>((file) => SharedMediaFile.fromJson(file))
-        .toList();
+    try {
+      final String json = await _mChannel.invokeMethod('getInitialMedia');
+      final encoded = jsonDecode(json);
+      return encoded
+          .map<SharedMediaFile>((file) => SharedMediaFile.fromJson(file))
+          .toList();
+    } catch (_, __) {
+      rethrow;
+    }
   }
 
   static Stream<List<SharedMediaFile>> getMediaStream() {
@@ -27,12 +32,10 @@ class ReceiveSharing {
       _streamMedia = stream.transform<List<SharedMediaFile>>(
         new StreamTransformer<String, List<SharedMediaFile>>.fromHandlers(
           handleData: (String data, EventSink<List<SharedMediaFile>> sink) {
-              final encoded = jsonDecode(data);
-              sink.add(encoded
-                  .map<SharedMediaFile>(
-                      (file) => SharedMediaFile.fromJson(file))
-                  .toList());
-
+            final encoded = jsonDecode(data);
+            sink.add(encoded
+                .map<SharedMediaFile>((file) => SharedMediaFile.fromJson(file))
+                .toList());
           },
         ),
       );
