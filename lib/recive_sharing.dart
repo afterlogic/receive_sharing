@@ -15,8 +15,11 @@ class ReceiveSharing {
 
   static Future<List<SharedMediaFile>> getInitialMedia() async {
     try {
-      final String json = await _mChannel.invokeMethod('getInitialMedia');
-      final encoded = jsonDecode(json);
+      final String? json = await _mChannel.invokeMethod('getInitialMedia');
+      if(json?.isEmpty ?? true){
+        return [];
+      }
+      final encoded = jsonDecode(json!);
       return encoded
           .map<SharedMediaFile>((file) => SharedMediaFile.fromJson(file))
           .toList();
